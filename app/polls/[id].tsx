@@ -1,7 +1,8 @@
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { View, Text } from "react-native";
+import { View, Text, Pressable, Button } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { Feather } from "@expo/vector-icons";
+import { useState } from "react";
 
 const poll = {
   question: "React Native vs Flutter",
@@ -10,24 +11,34 @@ const poll = {
 
 const PollDetails = () => {
   const { id } = useLocalSearchParams();
+  const [selected, setSelected] = useState<string>("React Native FTW");
+
+  const vote = () => console.warn("Vote", selected);
+
   return (
     <SafeAreaProvider>
-      <SafeAreaView>
-        <View className="p-2">
+      <SafeAreaView className="bg-sky-100/50 flex-1 p-4">
+        <View className="">
           <Text className="text-sm font-medium text-zinc-900">
             {poll.question}
           </Text>
-          <View className="flex flex-col gap-2">
+          <View className="flex flex-col gap-2 mb-4">
             {poll.options.map((option, index) => (
-              <View
+              <Pressable
                 key={index}
-                className=" p-2 bg-zinc-200 flex flex-row gap-1  rounded-md cursor-pointer hover:bg-zinc-400 transition-colors"
+                onPress={() => setSelected(option)}
+                className=" p-2 bg-zinc-300 flex flex-row gap-1  rounded-md cursor-pointer hover:bg-zinc-400 transition-colors"
               >
-                <Feather name="check-circle" size={18} color="gray" />
+                <Feather
+                  name={selected === option ? "check-circle" : "circle"}
+                  size={18}
+                  color={selected === option ? "green" : "gray"}
+                />
                 <Text className="text-zinc-700 text-xs ">{option}</Text>
-              </View>
+              </Pressable>
             ))}
           </View>
+          <Button title="Vote" onPress={() => vote} />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
