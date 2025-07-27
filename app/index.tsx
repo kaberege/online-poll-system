@@ -1,20 +1,22 @@
-import { Text, FlatList, Pressable, Alert, Image } from "react-native";
+import {
+  Text,
+  FlatList,
+  Pressable,
+  Alert,
+  Image,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign } from "@expo/vector-icons";
 import { Link, Stack, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-
-interface PollProps {
-  id: number;
-  question: string;
-  options: string[];
-}
+import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { setPolls } from "@/store/poll/pollSlice";
 
 export default function Index() {
-  const [polls, setPolls] = useState<PollProps[] | null>(null);
-
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const polls = useAppSelector((state) => state.polls);
 
   useEffect(() => {
     const fetchPolls = async () => {
@@ -26,8 +28,8 @@ export default function Index() {
         Alert.alert("Error Fetching data!");
       }
 
-      console.log(data);
-      setPolls(data);
+      //console.log(data);
+      if (data) dispatch(setPolls(data));
     };
 
     fetchPolls();
@@ -45,6 +47,10 @@ export default function Index() {
         />
       </Pressable>
     );
+  }
+
+  if (!polls) {
+    return <ActivityIndicator className="mt-20" />;
   }
 
   return (
@@ -73,7 +79,9 @@ export default function Index() {
               href={{ pathname: "/polls/[id]", params: { id: item.id } }}
               className="bg-teal-400 text-center"
             >
-              <Text className="bg-amber-600">{item.id} Example poll</Text>
+              <Text className="bg-amber-600">
+                {item.id} {item.question}
+              </Text>
             </Link>
           )}
           className=""

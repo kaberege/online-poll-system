@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Alert, View, Text, Button, AppState, TextInput } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { Redirect } from "expo-router";
 import { supabase } from "@/lib/supabase";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { initializeSession } from "@/store/poll/authSlice";
 
 AppState.addEventListener("change", (state) => {
   if (state === "active") {
@@ -15,6 +18,13 @@ export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const session = useAppSelector((state) => state.auth.session);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(initializeSession());
+  }, []);
 
   async function signInWithEmail() {
     setLoading(true);
@@ -45,6 +55,10 @@ export default function Auth() {
       Alert.alert("Please check your inbox for email verification!");
 
     setLoading(false);
+  }
+
+  if (session?.user) {
+    return <Redirect href="/profile" />;
   }
 
   return (

@@ -1,8 +1,10 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect } from "react";
 import { initializeSession } from "@/store/poll/authSlice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { supabase } from "@/lib/supabase";
+import { Redirect } from "expo-router";
 
 export default function ProfileScreen() {
   const session = useAppSelector((state) => state.auth.session);
@@ -12,7 +14,9 @@ export default function ProfileScreen() {
     dispatch(initializeSession());
   }, []);
 
-  console.log(session);
+  if (!session?.user) {
+    return <Redirect href="/login" />;
+  }
 
   return (
     <SafeAreaProvider>
@@ -21,6 +25,7 @@ export default function ProfileScreen() {
           <Text className="text-md text-lg font-medium text-zinc-900">
             User id:{session && session.user ? session.user.id : "No session"}
           </Text>
+          <Button title="Sign out" onPress={() => supabase.auth.signOut()} />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

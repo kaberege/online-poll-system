@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import sessionReducer from "./poll/authSlice";
+import pollReducer from "./poll/pollSlice";
 
 const store = configureStore({
   reducer: {
     auth: sessionReducer,
+    polls: pollReducer,
   },
 });
 
