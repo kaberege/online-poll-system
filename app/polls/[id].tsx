@@ -1,9 +1,19 @@
+import { useEffect, useState } from "react";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, Pressable, Button } from "react-native";
-import { Link, useLocalSearchParams } from "expo-router";
+import { View, Text, Pressable, Button, Alert } from "react-native";
+import { Link, useLocalSearchParams, Redirect } from "expo-router";
 import { Feather } from "@expo/vector-icons";
-import { useState } from "react";
-import { useAppSelector } from "@/store/hooks";
+import { supabase } from "@/lib/supabase";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { initializeSession } from "@/store/poll/authSlice";
+import { VoteProps } from "@/types/db";
+
+type NewVote = {
+  id?: number;
+  option: string;
+  poll_id: number;
+  user_id: string;
+};
 
 const PollDetails = () => {
   const { id } = useLocalSearchParams();
@@ -11,6 +21,73 @@ const PollDetails = () => {
   const polls = useAppSelector((state) =>
     state.polls.find((poll) => poll.id === Number.parseInt(id as string))
   );
+  const session = useAppSelector((state) => state.auth.session);
+  const dispatch = useAppDispatch();
+  const [userVote, setUserVote] = useState<VoteProps | null>(null);
+
+  useEffect(() => {
+    dispatch(initializeSession());
+
+    const fetchUserVote = async () => {
+      if (!polls || !session?.user.id) {
+        return;
+      }
+
+      let { data, error } = await supabase
+        .from("votes")
+        .select("*")
+        .eq("poll_id", Number.parseInt(id as string))
+        .eq("user_id", session?.user.id)
+        .limit(1)
+        .single();
+
+      if (error) {
+        console.log("Before Alert");
+        console.log(error);
+        Alert.alert("Error Fetching votes!");
+      }
+
+      if (data) {
+        setUserVote(data);
+        setSelected(data.option);
+      }
+    };
+
+    fetchUserVote();
+  }, []);
+
+  const vote = async () => {
+    if (!polls || !session?.user.id) {
+      return;
+    }
+
+    const newVote: NewVote = {
+      option: selected,
+      poll_id: polls?.id,
+      user_id: session?.user.id,
+    };
+
+    if (userVote) {
+      newVote.id = userVote.id;
+    }
+
+    const { data, error } = await supabase
+      .from("votes")
+      .upsert([newVote])
+      .select()
+      .single();
+
+    if (error) {
+      Alert.alert("Failed to vote!");
+    } else {
+      setUserVote(data);
+      Alert.alert("Thank you for your vote.");
+    }
+  };
+
+  if (!session?.user) {
+    return <Redirect href="/login" />;
+  }
 
   if (!polls) {
     return (
@@ -51,7 +128,7 @@ const PollDetails = () => {
                 </Pressable>
               ))}
           </View>
-          <Button title="Vote" onPress={() => console.log("Voted")} />
+          <Button title="Vote" onPress={() => vote()} />
         </View>
       </SafeAreaView>
     </SafeAreaProvider>
