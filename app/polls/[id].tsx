@@ -7,16 +7,15 @@ import {
   TouchableOpacity,
   Alert,
   Share,
-  Dimensions,
   ScrollView,
 } from "react-native";
 import { Link, useLocalSearchParams, Redirect } from "expo-router";
 import { Feather } from "@expo/vector-icons";
-import { PieChart } from "react-native-chart-kit";
 import { supabase } from "@/lib/supabase";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { initializeSession } from "@/store/poll/authSlice";
 import { VoteProps } from "@/types/db";
+import PollResults from "@/components/PollResults";
 
 type NewVote = {
   id?: number;
@@ -136,12 +135,9 @@ const PollDetails = () => {
     );
   }
 
-  const chartData = Object.entries(votesByOption).map(([option, count], i) => ({
-    name: option,
-    population: count,
-    color: ["#10b981", "#3b82f6", "#f59e0b", "#ef4444", "#a855f7"][i % 5],
-    legendFontColor: "#374151",
-    legendFontSize: 12,
+  const barChartData = Object.entries(votesByOption).map(([option, count]) => ({
+    x: option,
+    y: count,
   }));
 
   return (
@@ -168,13 +164,13 @@ const PollDetails = () => {
                       : "bg-white border-zinc-300"
                   } flex-row items-center justify-between mb-2`}
                 >
-                  <View className="flex-row items-center space-x-2">
+                  <View className="flex-row items-center">
                     <Feather
                       name={selected === option ? "check-circle" : "circle"}
                       size={20}
                       color={selected === option ? "green" : "gray"}
                     />
-                    <Text className="text-zinc-800">{option}</Text>
+                    <Text className="text-zinc-800 ml-2">{option}</Text>
                   </View>
                   <Text className="text-sm text-zinc-600">
                     {votes} votes ({percent}%)
@@ -184,43 +180,25 @@ const PollDetails = () => {
             })}
 
             <View className="flex flex-row justify-between flex-wrap gap-2 my-4">
-              {" "}
               <TouchableOpacity
                 disabled={!selected}
-                className="bg-blue-500 py-2 px-3 rounded-md mt-4"
+                className="bg-blue-500 py-2 px-3 rounded-md disabled:bg-slate-400 disabled:opacity-50"
                 onPress={vote}
               >
                 <Text className="text-white text-center font-bold">Vote</Text>
               </TouchableOpacity>
-              {session?.user.id && (
-                <TouchableOpacity
-                  className="bg-green-500 py-2 px-3 rounded-md mt-4"
-                  onPress={sharePoll}
-                >
-                  <Text className="text-white text-center font-semibold">
-                    Share Poll Link
-                  </Text>
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity
+                className="bg-green-500 py-2 px-3 rounded-md"
+                onPress={sharePoll}
+              >
+                <Text className="text-white text-center font-semibold">
+                  Share Poll Link
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
-
           {Object.keys(votesByOption).length > 0 && (
-            <PieChart
-              data={chartData}
-              width={Dimensions.get("window").width - 32}
-              height={220}
-              chartConfig={{
-                backgroundColor: "#fff",
-                backgroundGradientFrom: "#fff",
-                backgroundGradientTo: "#fff",
-                color: (opacity = 1) => `rgba(51, 65, 85, ${opacity})`,
-              }}
-              accessor={"population"}
-              backgroundColor={"transparent"}
-              paddingLeft={"8"}
-              absolute
-            />
+            <PollResults barChartData={barChartData} totalVotes={totalVotes} />
           )}
         </ScrollView>
       </SafeAreaView>

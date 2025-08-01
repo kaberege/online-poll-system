@@ -63,23 +63,28 @@ const NewPoll = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView className="bg-sky-100/50 flex-1 p-4">
-        <View>
-          <Text className="mt-4 text-zinc-800 text-lg font-semibold ">
-            Tile
+      <SafeAreaView className="bg-sky-100/50 flex-1 px-4 py-6">
+        <View className="space-y-4">
+          <Text className="text-zinc-800 text-2xl font-semibold">
+            Create a Poll
           </Text>
-          <TextInput
-            placeholder="Type your question here"
-            value={question}
-            onChangeText={setQuestion}
-            className="p-2 rounded-md bg-slate-50 outline-none"
-          />
-          <Text className="mt-4 mb-2 text-zinc-800 text-base">Options</Text>
-          <View>
+
+          <View className="space-y-2">
+            <Text className="text-zinc-700 font-medium">Poll Question</Text>
+            <TextInput
+              placeholder="Type your question here"
+              value={question}
+              onChangeText={setQuestion}
+              className="bg-white rounded-xl px-4 py-3 text-base border border-zinc-300"
+            />
+          </View>
+
+          <View className="space-y-2">
+            <Text className="text-zinc-700 font-medium">Options</Text>
             {options.map((option, index) => (
               <View
                 key={index}
-                className="p-2 bg-slate-50 mt-1 rounded-md flex flex-row"
+                className="flex-row items-center bg-white border border-zinc-300 rounded-xl px-3 py-2"
               >
                 <TextInput
                   value={option}
@@ -89,7 +94,7 @@ const NewPoll = () => {
                     updated[index] = text;
                     setOptions(updated);
                   }}
-                  className=" outline-none flex-1 "
+                  className="flex-1 text-base pr-2"
                 />
                 <Pressable
                   onPress={() => {
@@ -97,20 +102,34 @@ const NewPoll = () => {
                     updated.splice(index, 1);
                     setOptions(updated);
                   }}
+                  className="pl-2"
                 >
                   <Feather name="x" size={20} color="red" />
                 </Pressable>
               </View>
             ))}
-            <Button
-              title="Add option"
+            <Pressable
               onPress={() => setOptions((prev) => [...prev, ""])}
-            />
+              className="mt-2 items-center justify-center rounded-xl bg-teal-500 py-3"
+            >
+              <Text className="text-white font-medium">+ Add Option</Text>
+            </Pressable>
           </View>
-          <Button title="Create poll" onPress={createPoll} />
+
           {error && (
-            <Text className="text-center text-red-600 text-xs">{error}</Text>
+            <Text className="text-red-600 text-sm text-center mt-2">
+              {error}
+            </Text>
           )}
+
+          <Pressable
+            onPress={createPoll}
+            className="mt-4 items-center justify-center rounded-xl bg-emerald-600 py-4"
+          >
+            <Text className="text-white font-semibold text-base">
+              Create Poll
+            </Text>
+          </Pressable>
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

@@ -50,12 +50,12 @@ export default function Index() {
   }
 
   if (!polls) {
-    return <ActivityIndicator className="mt-20" />;
+    return <ActivityIndicator className="mt-20" color="#0f766e" size="large" />;
   }
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView className="bg-sky-100/50 flex-1 p-4">
+      <SafeAreaView className="bg-sky-100/50 flex-1 px-4 py-6">
         <Stack.Screen
           options={{
             title: "Polls",
@@ -74,17 +74,22 @@ export default function Index() {
         <FlatList
           data={polls}
           contentContainerStyle={{ gap: 5, flex: 1 }}
+          className="flex-1"
           renderItem={({ item }) => (
             <Link
               href={{ pathname: "/polls/[id]", params: { id: item.id } }}
-              className="bg-teal-400 text-center"
+              className="rounded-xl bg-white shadow-md p-4"
             >
-              <Text className="bg-amber-600">
-                {item.id} {item.question}
+              <Text className="text-lg font-semibold text-zinc-800">
+                <Text className="text-lg font-semibold text-zinc-800">
+                  {item.question}
+                </Text>
+                <Text className="text-sm text-zinc-500 mt-1">
+                  Poll ID: {item.id}
+                </Text>
               </Text>
             </Link>
           )}
-          className=""
         />
       </SafeAreaView>
     </SafeAreaProvider>
