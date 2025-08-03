@@ -1,4 +1,4 @@
-import { View, Text, Image, Pressable, Alert } from "react-native";
+import { View, Text, Image, Alert } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect } from "react";
 import { initializeSession } from "@/store/poll/authSlice";
@@ -20,12 +20,10 @@ export default function ProfileScreen() {
   }, []);
 
   const handleLogout = async () => {
-    Alert.alert("Error1");
     const { error } = await supabase.auth.signOut();
     if (error) {
       Alert.alert("Error", error.message);
     }
-    Alert.alert("Error2");
   };
 
   if (!session?.user) {
@@ -36,7 +34,7 @@ export default function ProfileScreen() {
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 p-4 bg-sky-50">
         <Text className="text-black text-4xl font-semibold mb-6">Profile</Text>
-        <View className="bg-[#34967C] h-[90px] mb-10 flex-row items-center rounded-md justify-between px-5">
+        <View className="bg-teal-600 mb-10 py-6 flex-row items-center rounded-md justify-between px-5">
           <View className="flex-row items-center gap-4">
             <Image
               source={require("@/assets/images/profile2.png")}
@@ -71,13 +69,12 @@ export default function ProfileScreen() {
             title="Security Settings"
             subtitle="Update password or enable 2FA"
           />
-          <Pressable onPress={handleLogout}>
-            <ProfileOption
-              icon={<MaterialIcons name="logout" size={24} color="#0601B4" />}
-              title="Log Out"
-              subtitle="Sign out of your account"
-            />
-          </Pressable>
+          <ProfileOption
+            icon={<MaterialIcons name="logout" size={24} color="#0601B4" />}
+            title="Log Out"
+            subtitle="Sign out of your account"
+            action={handleLogout}
+          />
         </View>
         <Text className="text-black text-xl font-medium mb-4">More</Text>
         <View className="bg-white rounded-md p-4 space-y-4">

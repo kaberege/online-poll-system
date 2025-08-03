@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   Text,
   FlatList,
@@ -8,7 +9,6 @@ import {
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Link, Stack, useRouter } from "expo-router";
-import { useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { useAppSelector, useAppDispatch } from "@/store/hooks";
 import { setPolls } from "@/store/poll/pollSlice";
@@ -20,15 +20,12 @@ export default function Index() {
 
   useEffect(() => {
     const fetchPolls = async () => {
-      console.log("Fetching....");
-
       let { data, error } = await supabase.from("polls").select("*");
 
       if (error) {
         Alert.alert("Error Fetching data!");
       }
 
-      //console.log(data);
       if (data) dispatch(setPolls(data));
     };
 
@@ -49,7 +46,7 @@ export default function Index() {
     );
   }
 
-  if (!polls) {
+  if (polls.length < 1) {
     return <ActivityIndicator className="mt-20" color="#0f766e" size="large" />;
   }
 
@@ -81,11 +78,11 @@ export default function Index() {
               className="rounded-xl bg-white shadow-md p-4"
             >
               <Text className="text-lg font-semibold text-zinc-800">
+                <Text className="text-xs text-zinc-500">
+                  Poll {item.id}:&nbsp;
+                </Text>
                 <Text className="text-lg font-semibold text-zinc-800">
                   {item.question}
-                </Text>
-                <Text className="text-sm text-zinc-500 mt-1">
-                  Poll ID: {item.id}
                 </Text>
               </Text>
             </Link>

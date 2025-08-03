@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, Button, Pressable, Alert } from "react-native";
+import { View, Text, TextInput, Pressable, Alert } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
 import { Redirect, router } from "expo-router";
@@ -69,22 +69,22 @@ const NewPoll = () => {
             Create a Poll
           </Text>
 
-          <View className="space-y-2">
+          <View className="space-y-2 mt-4">
             <Text className="text-zinc-700 font-medium">Poll Question</Text>
             <TextInput
               placeholder="Type your question here"
               value={question}
               onChangeText={setQuestion}
-              className="bg-white rounded-xl px-4 py-3 text-base border border-zinc-300"
+              className="bg-white rounded-xl px-4 py-3 text-base border border-zinc-300 mt-1"
             />
           </View>
 
-          <View className="space-y-2">
-            <Text className="text-zinc-700 font-medium">Options</Text>
+          <View className="space-y-2 mt-2">
+            <Text className="text-zinc-700 font-medium mb-1">Options</Text>
             {options.map((option, index) => (
               <View
                 key={index}
-                className="flex-row items-center bg-white border border-zinc-300 rounded-xl px-3 py-2"
+                className="flex-row items-center bg-white border border-zinc-300 rounded-xl px-3 py-2 mb-1"
               >
                 <TextInput
                   value={option}

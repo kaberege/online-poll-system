@@ -1,22 +1,14 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { AuthState } from "@/types";
 
-// Types for session state
-interface AuthState {
-  session: Session | null;
-  loading: boolean;
-  error: string | null;
-}
-
-// initialState typed values
 const initialState: AuthState = {
   session: null,
   loading: false,
   error: null,
 };
 
-// createAsyncThunk to get session and setup listener
 export const initializeSession = createAsyncThunk(
   "auth/initializeSession",
   async (_, { dispatch, rejectWithValue }) => {
@@ -24,8 +16,6 @@ export const initializeSession = createAsyncThunk(
       const {
         data: { session },
       } = await supabase.auth.getSession();
-
-      // Setup listener for future auth state changes
       supabase.auth.onAuthStateChange((_event, session) => {
         dispatch(setSession(session));
       });

@@ -78,7 +78,7 @@ export default function Join() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-            placeholder="••••••••"
+            placeholder="......."
             className="flex-1"
           />
           <FontAwesome name="eye-slash" size={20} color="#7E7B7B" />
@@ -90,7 +90,7 @@ export default function Join() {
             value={confirm}
             onChangeText={setConfirm}
             secureTextEntry
-            placeholder="••••••••"
+            placeholder="......."
             className="flex-1"
           />
           <FontAwesome name="eye-slash" size={20} color="#7E7B7B" />

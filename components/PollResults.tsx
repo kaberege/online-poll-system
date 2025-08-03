@@ -1,14 +1,7 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { VictoryBar, VictoryChart, VictoryTheme } from "victory-native";
-
-interface PollResultsProps {
-  barChartData: {
-    x: string;
-    y: number;
-  }[];
-  totalVotes: number;
-}
+import { type PollResultsProps } from "@/types";
 
 const PollResults: React.FC<PollResultsProps> = ({
   barChartData,

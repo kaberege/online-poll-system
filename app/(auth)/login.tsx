@@ -71,7 +71,7 @@ export default function LogIn() {
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-            placeholder="••••••••"
+            placeholder="......."
             className="flex-1"
           />
           <FontAwesome name="eye-slash" size={20} color="#7E7B7B" />

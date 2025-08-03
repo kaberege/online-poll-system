@@ -7,12 +7,7 @@ const pollSlice = createSlice({
   name: "polls",
   initialState,
   reducers: {
-    setPolls: (state, action: PayloadAction<PollProps[]>) => {
-      const newPolls = action.payload;
-      newPolls.forEach((element) => {
-        state.push(element);
-      });
-    },
+    setPolls: (_state, action: PayloadAction<PollProps[]>) => action.payload,
   },
 });
 

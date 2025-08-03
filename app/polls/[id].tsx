@@ -14,15 +14,9 @@ import { Feather } from "@expo/vector-icons";
 import { supabase } from "@/lib/supabase";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { initializeSession } from "@/store/poll/authSlice";
-import { VoteProps } from "@/types/db";
+import { type VoteProps } from "@/types/db";
 import PollResults from "@/components/PollResults";
-
-type NewVote = {
-  id?: number;
-  option: string;
-  poll_id: number;
-  user_id: string;
-};
+import { type NewVote } from "@/types";
 
 const PollDetails = () => {
   const { id } = useLocalSearchParams();
