@@ -27,22 +27,6 @@ This project is a mobile application built with **React Native** using **Expo**,
 
 ---
 
-## Folder Structure
-
-```
-
-src/
-├── components/ # Reusable components
-├── screens/ # App screens
-├── store/ # Redux slices and store setup
-├── lib/ # Supabase client setup
-├── assets/ # Images, icons, etc.
-└── app/ # App entry point (Expo Router)
-
-```
-
----
-
 ## Installation
 
 Clone the repo:
