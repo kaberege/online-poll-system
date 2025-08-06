@@ -1,10 +1,10 @@
-# 📱 Online Poll System (Mobile App with Expo)
+# Online Poll System (Mobile App with Expo)
 
 This project is a mobile application built with **React Native** using **Expo**, designed for real-time polling interactions. It allows users to create polls, vote, and visualize results dynamically.
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Poll Creation**: Users can create polls with multiple options.
 - **Live Voting**: Users can vote on existing polls and see real-time results.
@@ -17,31 +17,23 @@ This project is a mobile application built with **React Native** using **Expo**,
 
 ---
 
-## 📱 Screenshots
-
-| Home Screen                    | Poll Details                      | Create Poll                      | Results Chart                     |
-| ------------------------------ | --------------------------------- | -------------------------------- | --------------------------------- |
-| ![](./assets/screens/home.png) | ![](./assets/screens/details.png) | ![](./assets/screens/create.png) | ![](./assets/screens/results.png) |
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Frontend**: React Native (Expo), NativeWind
 - **State Management**: Redux Toolkit
 - **Backend**: Supabase (Auth, Database, Realtime)
-- **Chart**: Tailwind-styled custom bar chart (no 3rd-party chart lib)
+- **Chart**: Tailwind-styled custom bar chart
 - **Storage**: AsyncStorage for session persistence
 
 ---
 
-## 📂 Folder Structure
+## Folder Structure
 
 ```
 
 src/
-├── components/ # Reusable components (PollCard, Chart, etc.)
-├── screens/ # App screens (Home, Poll, Create, Login)
+├── components/ # Reusable components
+├── screens/ # App screens
 ├── store/ # Redux slices and store setup
 ├── lib/ # Supabase client setup
 ├── assets/ # Images, icons, etc.
@@ -51,13 +43,13 @@ src/
 
 ---
 
-## 📦 Installation
+## Installation
 
 Clone the repo:
 
 ```bash
 git clone https://github.com/kaberege2/online-poll-system.git
-cd online-poll-app
+cd online-poll-system
 ```
 
 Install dependencies:
@@ -81,7 +73,7 @@ npx expo start
 
 ---
 
-## 🧪 Testing
+## Testing
 
 To test poll voting and chart updates:
 
@@ -91,7 +83,7 @@ To test poll voting and chart updates:
 
 ---
 
-## 🧠 Key Learnings
+## Key Learnings
 
 - Implementing real-time sync with Supabase.
 - Building a Redux-powered architecture for mobile.
