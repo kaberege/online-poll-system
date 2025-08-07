@@ -30,7 +30,7 @@ export default function Index() {
     };
 
     fetchPolls();
-  }, []);
+  }, [polls]);
 
   function LoginIcon() {
     return (

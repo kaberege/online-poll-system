@@ -30,7 +30,6 @@ const NewPoll = () => {
     }
 
     const emptyOptions = options.filter((option) => option === "");
-    console.log(`emptyOptions: ${emptyOptions.length}`);
     if (emptyOptions.length > 0) {
       setError("All options must be filled!");
       return;
@@ -47,7 +46,6 @@ const NewPoll = () => {
       .select();
 
     if (error) {
-      console.log(error);
       setError("Failed to create the poll!");
       Alert.alert("Failed to create the poll!");
       return;
